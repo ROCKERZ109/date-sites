@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>💖 Naz’s Date Guide — Slide & Swoon</title>
+    <style>
+        :root {
+            --accent: #d44fa3;
+            --accent-soft: #ffdff0;
+            --card-w: 340px;
+        }
+
+        * {
+            box-sizing: border-box
+        }
+
+        body {
+            margin: 0;
+            font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+            background: linear-gradient(135deg, #fce4f0 0%, #f9c2e1 45%, #f4a6d1 100%);
+            min-height: 100vh;
+            color: #222;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            overflow-x: hidden;
+        }
+
+        /* floating hearts background */
+        .hearts {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 0;
+            overflow: hidden;
+        }
+
+        .heart {
+            position: absolute;
+            bottom: -80px;
+            font-size: 14px;
+            opacity: .4;
+            animation: floatUp linear infinite;
+            transform-origin: center;
+        }
+
+        @keyframes floatUp {
+            0% {
+                transform: translateY(0) rotate(0) scale(1);
+                opacity: .4;
+            }
+
+            100% {
+                transform: translateY(-120vh) rotate(200deg) scale(1.3);
+                opacity: 0;
+            }
+        }
+
+        header {
+            text-align: center;
+            padding: 48px 20px 10px;
+            z-index: 2;
+            position: relative;
+            color: white;
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 2.6rem;
+            letter-spacing: -0.02em;
+            text-shadow: 0 6px 18px rgba(0, 0, 0, 0.12);
+        }
+
+        header p {
+            margin-top: 8px;
+            opacity: .95;
+            font-weight: 500;
+        }
+
+        .wrap {
+            max-width: 1200px;
+            margin: 28px auto 80px;
+            padding: 0 18px;
+            position: relative;
+            z-index: 2;
+        }
+
+        /* Slider */
+        .slider-outer {
+            position: relative;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 28px;
+            border-radius: 20px;
+            box-shadow: 0 12px 35px rgba(0, 0, 0, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            overflow: hidden;
+        }
+
+        .controls-row {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 18px;
+        }
+
+        .left-controls {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+        }
+
+        .surprise-btn {
+            background: linear-gradient(90deg, var(--accent), #b93e8f);
+            color: white;
+            border: none;
+            padding: 10px 16px;
+            border-radius: 999px;
+            font-weight: 700;
+            cursor: pointer;
+            box-shadow: 0 6px 20px rgba(212, 79, 163, 0.18);
+            display: inline-flex;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .headline {
+            font-weight: 700;
+            color: white;
+            font-size: 1.05rem;
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .subtle {
+            color: rgba(255, 255, 255, 0.9);
+            opacity: 0.95;
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+
+        .slider-container {
+            overflow: hidden;
+            width: 100%;
+        }
+
+        .slider {
+            display: flex;
+            align-items: flex-start;
+            transition: transform .55s cubic-bezier(.2, .9, .25, 1);
+            will-change: transform;
+            padding: 18px 0 36px;
+        }
+
+        .card {
+            width: var(--card-w);
+            min-width: var(--card-w);
+            margin: 0 14px;
+            border-radius: 16px;
+            background: rgba(255, 255, 255, 0.95);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+            overflow: hidden;
+            border: 1px solid rgba(0, 0, 0, 0.04);
+            display: flex;
+            flex-direction: column;
+            transition: transform .25s ease, box-shadow .25s ease;
+            position: relative;
+        }
+
+        .card:focus {
+            outline: 3px solid rgba(212, 79, 163, 0.12)
+        }
+
+        .card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.12)
+        }
+
+        .card img {
+            width: 100%;
+            height: 190px;
+            object-fit: cover;
+            background: #f8f0f4;
+            display: block;
+        }
+
+        .card .card-body {
+            padding: 16px 16px 18px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            flex: 1;
+        }
+
+        .name {
+            color: var(--accent);
+            font-weight: 800;
+            font-size: 1.12rem;
+            letter-spacing: -0.01em;
+        }
+
+        .meta {
+            font-size: 0.88rem;
+            color: #666;
+        }
+
+        .desc {
+            margin-top: 6px;
+            color: #555;
+            font-size: 0.95rem;
+            line-height: 1.35;
+            flex: 1;
+        }
+
+        .tag-row {
+            margin-top: 12px
+        }
+
+        .tag {
+            display: inline-block;
+            background: var(--accent-soft);
+            color: var(--accent);
+            padding: 6px 10px;
+            border-radius: 999px;
+            font-size: 12px;
+            font-weight: 700;
+            margin-right: 8px;
+            margin-bottom: 8px;
+        }
+
+        .card-foot {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            margin-top: 10px;
+            border-top: 1px dashed #f3e5ef;
+            padding-top: 12px;
+        }
+
+        .rating {
+            color: var(--accent);
+            font-weight: 800;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 1rem;
+        }
+
+        .rating .hearts {
+            font-size: 1.0rem;
+            letter-spacing: 2px
+        }
+
+        .price {
+            background: var(--accent-soft);
+            color: var(--accent);
+            padding: 7px 10px;
+            border-radius: 999px;
+            font-weight: 700;
+            font-size: 0.95rem;
+        }
+
+        /* nav arrows */
+        .nav-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            border-radius: 999px;
+            width: 44px;
+            height: 44px;
+            border: none;
+            background: rgba(255, 255, 255, 0.95);
+            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.12);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+            z-index: 3;
+        }
+
+        .nav-left {
+            left: 10px
+        }
+
+        .nav-right {
+            right: 10px
+        }
+
+        /* responsive */
+        @media (max-width:980px) {
+            :root {
+                --card-w: 300px
+            }
+
+            .card img {
+                height: 160px
+            }
+
+            header h1 {
+                font-size: 2.2rem
+            }
+        }
+
+        @media (max-width:560px) {
+            :root {
+                --card-w: 86vw
+            }
+
+            .card img {
+                height: 210px
+            }
+
+            .nav-btn {
+                display: none
+            }
+        }
+
+        footer {
+            text-align: center;
+            color: white;
+            font-weight: 700;
+            margin-top: 28px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="hearts" id="hearts"></div>
+
+    <header>
+        <h1>💖 Naz’s Date Guide</h1>
+        <p>From cozy strolls to heart-fluttering moments only curated for you ✨</p>
+    </header>
+
+    <main class="wrap" role="main">
+        <section class="slider-outer" aria-label="Date spots slider">
+            <div class="controls-row">
+                <div class="left-controls">
+                    <div class="headline">Your romantic journey ✨</div>
+                    <div style="width:10px"></div>
+                    <div class="subtle">Tip: use ← → keys or tap arrows</div>
+                </div>
+
+                <div style="display:flex; gap:12px; align-items:center;">
+                    <button class="surprise-btn" id="surpriseBtn">💌 Surprise Me</button>
+                </div>
+            </div>
+
+            <div class="slider-container">
+                <button class="nav-btn nav-left" id="prevBtn" aria-label="Previous">‹</button>
+                <div class="slider" id="slider" tabindex="0" aria-live="polite"></div>
+                <button class="nav-btn nav-right" id="nextBtn" aria-label="Next">›</button>
+            </div>
+        </section>
+    </main>
+
+    <footer>Now that the pipeline is complete, the ball's in your court. The project awaits 💕</footer>
+
+    <script>
+        const spots = [
+  
+    { name: "Liseberg", image: "https://smartcraft.com/wp-content/uploads/2022/08/Liseberg.jpg", category: "amusement", description: "Whirling rides, sparkling lights, and magical moments — let your hearts race together.", rating: 4.9, tags: [
+            "Fun",
+            "Lights",
+            "Thrill"
+        ]
+    },
+    { name: "Kafé Magasinet", image: "https://images.squarespace-cdn.com/content/v1/6005564247a6a51d636976c6/8e9ade26-1cd9-4dee-9bd7-a68f0c922457/kafemagasine-bild__24.jpg", category: "café", description: "A cozy hideaway with aromatic coffee & pastries — perfect for slow chats.", rating: 4.7, tags: [
+            "Café",
+            "Cozy",
+            "Coffee"
+        ]
+    },
+    { name: "Linnéplatsen", image: "https://vartgoteborg.se/cms/wp-content/uploads/2023/03/vy-linneplatsen-stor.jpg", category: "outdoor", description: "A lively square for wandering, cafés, and people-watching.", rating: 3.9, tags: [
+            "Square",
+            "Cafés"
+        ]
+    },
+    { name: "Feskekôrka", image: "https://images.squarespace-cdn.com/content/v1/650b62a0f8a2f61c3750e372/00e96e03-dfd3-41f5-977c-39200dcb8fd1/DSC07101-Edit-kopiera.jpeg?format=2500w", category: "culture", description: "Historic fish market with local seafood — atmospheric & authentic.", rating: 4.0, tags: [
+            "Market",
+            "Seafood"
+        ]
+    },
+    { name: "Heaven 23", image: "https://www.winetable.se/cdn-cgi/image/quality=80,format=auto,onerror=redirect,metadata=none/app/uploads/2024/07/heaven23_press.png", category: "restaurant", description: "Panoramic dining with skyline views — bring a camera.", rating: 4.1, tags: [
+            "View",
+            "Fine Dining"
+        ]
+    },
+    { name: "Delsjön", image: "https://www.mikaelsvensson.com/photo/wp-content/uploads/2017/09/170901008.jpg", category: "outdoor", description: "Lakeside escapes perfect for dusk strolls and picnics.", rating: 4.1, tags: [
+            "Lake",
+            "Nature"
+        ]
+    },
+    { name: "Haga Nygata", image: "https://cms.goteborg.com/uploads/2020/12/Haga_House-of-Vision_2309_04-scaled.jpg", category: "outdoor", description: "Charming wooden houses, cozy cafés — the perfect hand-in-hand walk.", rating: 4.2, tags: [
+            "Historic",
+            "Cafes"
+        ]
+    },
+    { name: "Luna Bistro (Carbon)", image: "https://static.wixstatic.com/media/b40462_151c2c5aa5234a7485eb8a9ce5b68321~mv2.jpg/v1/fill/w_980,h_653,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/6M7A9489.jpg", category: "restaurant", description: "Elegant international fine dining with refined flavors.", rating: 4.9, tags: [
+            "Fine Dining",
+            "Elegant"
+        ]
+    },
+    { name: "Bord 27", image: "https://www.gp.se/images/og/75c1a12c-8b54-47d2-a6f3-0f6133be6c95/images/103lOifgX6rIR9F4bkeWlLIPqgdqM.jpg?width=1200&quality=75", category: "restaurant", description: "Modern Swedish-European tasting menus—intimate tasting experience.", rating: 4.8, tags: [
+            "Modern",
+            "Tasting"
+        ]
+    },
+    { name: "La Cucina Italiana", image: "https://res.cloudinary.com/foodfriends/image/upload/w_1200,h_600,c_fill,f_auto,q_auto/restaurant/062111deb8a4b09b079cfd6c1335f04e.png", category: "restaurant", description: "Comforting Neapolitan flavors — perfect for a cozy dinner.", rating: 4.6, tags: [
+            "Italian",
+            "Classic"
+        ]
+    },
+    { name: "Silvis", image: "https://res.cloudinary.com/tf-lab/image/upload/restaurant/058882a5-e85e-4332-a095-3d81b990f2c4/ba833d3e-127f-4bce-9e02-323387d68964.jpg", category: "restaurant", description: "Lebanese & Mediterranean small plates — share & smile.", rating: 4.7, tags: [
+            "Mediterranean",
+            "Shareable"
+        ]
+    },
+    { name: "Thörnströms", image: "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/0d/c4/25/7d/matsal.jpg?w=900&h=500&s=1", category: "restaurant", description: "Refined dishes rooted in Nordic tradition.", rating: 4.7, tags: [
+            "Nordic",
+            "Refined"
+        ]
+    },
+    { name: "Barrique", image: "https://cms.goteborg.com/uploads/2023/11/BARRIQUE-SEPTEMBER-2023-13-1500x1125.png", category: "restaurant", description: "Wine-first dining with an intimate atmosphere.", rating: 4.6, tags: [
+            "Wine",
+            "Cozy"
+        ]
+    },
+    { name: "Human Restaurang", image: "https://images.squarespace-cdn.com/content/v1/612611e188d51c3edcbe09da/1a4bcd4f-2710-46ed-afd6-0195d3c6f98b/Human-AW21-16.jpg", category: "restaurant", description: "Bold, creative plates that spark conversation.", rating: 5.0, tags: [
+            "Innovative",
+            "Creative"
+        ]
+    },
+    { name: "Panos Panos Tavern", image: "https://panostavern.se/wp-content/uploads/panos-backroom-original-2.jpg", category: "restaurant", description: "Mediterranean comfort in a warm tavern setting.", rating: 4.8, tags: [
+            "Mediterranean",
+            "Cozy"
+        ]
+    },
+    { name: "Skansen Kronan", image: "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/29/3b/6c/8d/skansen-kronan.jpg?w=1200&h=-1&s=1", category: "view", description: "Historic ramparts and a sweeping city view.", rating: 4.6, tags: [
+            "View",
+            "Historic"
+        ]
+    },
+    { name: "Paddan Canal Tours", image: "https://cms.goteborg.com/uploads/2020/11/paddan-43-1-scaled.jpg", category: "water", description: "Guided canal tours — relaxed, scenic and so Gothenburg.", rating: 4.6, tags: [
+            "Boat",
+            "Sightseeing"
+        ]
+    },
+    { name: "Vrångö", image: "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/1b/e0/24/1d/photo2jpg.jpg?w=900&h=500&s=1", category: "outdoor", description: "Car-free island escapes, beaches & slow afternoons.", rating: 4.7, tags: [
+            "Island",
+            "Nature"
+        ]
+    },
+    { name: "Röda Sten Konsthall", image: "https://rodastenkonsthall.se/wordpress/wp-content/uploads/2023/01/Roda-Sten-Konsthall-2020_Photo-Hendrik-Zeitler.jpg", category: "culture", description: "Contemporary art by the water — edgy & romantic in its own way.", rating: 4.8, tags: [
+            "Art",
+            "Industrial"
+        ]
+    },
+    { name: "Bike Tour Gothenburg", image: "https://cms.goteborg.com/uploads/2020/12/bike-tour-gothenburg-43-1-2500x1875.jpg", category: "outdoor", description: "Active & lively — bike the city and trade stories.", rating: 5.0, tags: [
+            "Active",
+            "Guided"
+        ]
+    },
+    { name: "Maharani", image: "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/2e/75/47/1e/caption.jpg?w=1100&h=1100&s=1", category: "restaurant", description: "Deep flavors and warm hospitality — share the plates.", rating: 4.9, tags: [
+            "Indian",
+            "Flavorful"
+        ]
+    },
+    { name: "Sk Mat & Människor", image: "https://skmat.se/cache/img/content/files/images/3000-0-3/press_34_3786504257.png", category: "restaurant", description: "Stylish plates, considered flavors — date-night ready.", rating: 4.6, tags: [
+            "Contemporary",
+            "Stylish"
+        ]
+    }
+];
+
+        // Sort ascending
+        spots.sort((a, b) => a.rating - b.rating);
+
+        const slider = document.getElementById('slider');
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        const surpriseBtn = document.getElementById('surpriseBtn');
+
+        function render() {
+            slider.innerHTML = spots.map((s, i) => `
+        <article class="card" data-idx="${i}" tabindex="0" aria-label="${s.name} - ${s.rating} hearts">
+          <img src="${s.image}" alt="${s.name} photo" loading="lazy" onerror="this.onerror=null;this.src='https://source.unsplash.com/1200x800/?romantic'">
+          <div class="card-body">
+            <div class="name">${s.name}</div>
+            <div class="meta">${s.category} · ${s.tags.slice(0, 2).join(' · ')}</div>
+            <div class="desc">${s.description}</div>
+            <div class="tag-row">${s.tags.map(t => `<span class="tag">${t}</span>`).join('')}</div>
+            <div class="card-foot">
+              <div class="rating"><span class="score">${s.rating.toFixed(1)}</span><span class="hearts">${generateHearts(s.rating)}</span></div>
+              <div class="price">${s.price || ''}</div>
+            </div>
+          </div>
+        </article>
+      `).join('');
+            document.querySelectorAll('.card').forEach(c => {
+                c.onclick = () => {
+                    index = Number(c.dataset.idx);
+                    updateSlider(true);
+                };
+            });
+        }
+
+        function generateHearts(r) {
+            const full = Math.floor(r);
+            let out = '';
+            for (let i = 0; i < full; i++) out += '💗';
+            for (let i = full; i < 5; i++) out += '♡';
+            return out;
+        }
+
+        let index = 0;
+        function cardWidth() {
+            const card = document.querySelector('.card');
+            if (!card) return parseInt(getComputedStyle(document.documentElement).getPropertyValue('--card-w')) + 28;
+            const style = getComputedStyle(card);
+            const w = card.getBoundingClientRect().width;
+            const margin = parseFloat(style.marginLeft) + parseFloat(style.marginRight);
+            return Math.round(w + margin);
+        }
+
+        function updateSlider(animate = true) {
+            const w = cardWidth();
+            if (index < 0) index = 0;
+            if (index > spots.length - 1) index = spots.length - 1;
+            if (!animate) slider.style.transition = 'none';
+            slider.style.transform = `translateX(${-index * w}px)`;
+            if (!animate) {
+                void slider.offsetWidth;
+                slider.style.transition = '';
+            }
+            const cards = document.querySelectorAll('.card');
+            cards.forEach(c => c.style.boxShadow = '');
+            const active = document.querySelector(`.card[data-idx="${index}"]`);
+            if (active) {
+                active.style.boxShadow = '0 30px 70px rgba(0,0,0,0.18)';
+                active.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+            }
+        }
+
+        prevBtn.addEventListener('click', () => { if (index > 0) index--; updateSlider(); });
+        nextBtn.addEventListener('click', () => { if (index < spots.length - 1) index++; updateSlider(); });
+
+        surpriseBtn.addEventListener('click', () => {
+            const r = Math.floor(Math.random() * spots.length);
+            index = r;
+            updateSlider();
+            const el = document.querySelector(`.card[data-idx="${r}"]`);
+            if (el) {
+                el.animate([{ transform: 'scale(1)' }, { transform: 'scale(1.03)' }, { transform: 'scale(1)' }], { duration: 700, easing: 'ease' });
+            }
+        });
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowLeft') { if (index > 0) index--; updateSlider(); }
+            if (e.key === 'ArrowRight') { if (index < spots.length - 1) index++; updateSlider(); }
+            if (e.key === ' ') { e.preventDefault(); const r = Math.floor(Math.random() * spots.length); index = r; updateSlider(); }
+        });
+
+        window.addEventListener('resize', () => updateSlider(false));
+        window.addEventListener('load', () => {
+            render();
+            createHearts();
+            setTimeout(() => updateSlider(false), 60);
+        });
+
+        function createHearts() {
+            const container = document.getElementById('hearts');
+            const colors = ['💖', '💕', '💓', '✨'];
+            setInterval(() => {
+                const el = document.createElement('div');
+                el.className = 'heart';
+                el.style.left = (Math.random() * 100) + 'vw';
+                const size = 12 + Math.random() * 24;
+                el.style.fontSize = size + 'px';
+                el.style.animationDuration = (6 + Math.random() * 6) + 's';
+                el.style.opacity = 0.3 + Math.random() * 0.4;
+                el.textContent = colors[Math.floor(Math.random() * colors.length)];
+                container.appendChild(el);
+                setTimeout(() => el.remove(), 14000);
+            }, 350);
+        }
+
+        slider.addEventListener('focus', () => slider.style.outline = 'none');
+    </script>
+</body>
+
+</html>

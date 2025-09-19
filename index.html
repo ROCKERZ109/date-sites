@@ -305,6 +305,7 @@
             }
         }
 
+        /* Make nav buttons visible on smaller screens */
         @media (max-width:560px) {
             :root {
                 --card-w: 86vw
@@ -315,7 +316,9 @@
             }
 
             .nav-btn {
-                display: none
+                display: flex; /* Override the desktop hide rule */
+                width: 50px;
+                height: 50px;
             }
         }
 
@@ -363,7 +366,7 @@
     <script>
         const spots = [
   
-    { name: "Liseberg", image: "https://smartcraft.com/wp-content/uploads/2022/08/Liseberg.jpg", category: "amusement", description: "Whirling rides, sparkling lights, and magical moments — let your hearts race together.", rating: 4.9, tags: [
+    { name: "Liseberg", image: "https://smartcraft.com/wp-content/uploads/2022/08/Liseberg.jpg", category: "amusement", description: "Whirling rides, sparkling lights, and magical moments — let your hearts race together.", rating: 4.7, tags: [
             "Fun",
             "Lights",
             "Thrill"
@@ -492,7 +495,7 @@
           <div class="card-body">
             <div class="name">${s.name}</div>
             <div class="meta">${s.category} · ${s.tags.slice(0, 2).join(' · ')}</div>
-            <div class="desc">${s.desc}</div>
+            <div class="desc">${s.description}</div>
             <div class="tag-row">${s.tags.map(t => `<span class="tag">${t}</span>`).join('')}</div>
             <div class="card-foot">
               <div class="rating"><span class="score">${s.rating.toFixed(1)}</span><span class="hearts">${generateHearts(s.rating)}</span></div>
